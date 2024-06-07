@@ -1,6 +1,7 @@
 import express from "express";
 import cors from "cors";
 import dotenv from "dotenv";
+import path from "path";
 import mongoose from "mongoose";
 import todoRouter from "./routes/todoRouter.js";
 
@@ -22,7 +23,7 @@ async function main() {
 main();
 
 server.use(cors());
-server.use(express.static("public"));
+server.use(express.static(path.resolve(__dirname, "public")));
 server.use(express.json());
 server.use("/todos", todoRouter);
 

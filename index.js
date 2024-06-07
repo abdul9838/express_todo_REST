@@ -1,22 +1,32 @@
-import express, { json } from "express";
+import express from "express";
 import cors from "cors";
+import dotenv from "dotenv";
 import mongoose from "mongoose";
 import todoRouter from "./routes/todoRouter.js";
+
+dotenv.config();
 
 const server = express();
 
 async function main() {
-  await mongoose.connect(
-    "mongodb+srv://abdulahadansari810:mongodb007@cluster0.glhdiwj.mongodb.net/notes"
-  );
+  try {
+    await mongoose.connect(process.env.MONGO_URI, {
+      useNewUrlParser: true,
+      useUnifiedTopology: true,
+    });
+    console.log("Connected to MongoDB");
+  } catch (err) {
+    console.error("Error connecting to MongoDB:", err);
+  }
 }
-main().catch((err) => console.log(err));
+main();
 
 server.use(cors());
 server.use(express.static("public"));
 server.use(express.json());
 server.use("/todos", todoRouter);
 
-server.listen(8000, () => {
-  console.log("http//localhost:8000");
+const PORT = process.env.PORT || 3000;
+server.listen(PORT, () => {
+  console.log(`Server is running on port ${PORT}`);
 });

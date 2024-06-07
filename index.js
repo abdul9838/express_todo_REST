@@ -4,6 +4,7 @@ import dotenv from "dotenv";
 import path from "path";
 import mongoose from "mongoose";
 import todoRouter from "./routes/todoRouter.js";
+import { readFile } from "fs";
 
 dotenv.config();
 
@@ -23,10 +24,14 @@ async function main() {
 main();
 
 server.use(cors());
-server.use("/", express.static("public"));
+server.use(express.static("public"));
 
 server.use(express.json());
 server.use("/todos", todoRouter);
+
+server.use("/", (req, res) => {
+  readFile("index.html");
+});
 
 const PORT = process.env.PORT || 3000;
 server.listen(PORT, () => {

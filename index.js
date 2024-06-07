@@ -23,7 +23,8 @@ async function main() {
 main();
 
 server.use(cors());
-server.use(express.static(path.resolve(__dirname, "public")));
+server.use(express.static("public"));
+
 server.use(express.json());
 server.use("/todos", todoRouter);
 
